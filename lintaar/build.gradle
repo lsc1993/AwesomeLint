@@ -1,0 +1,45 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+configurations {
+    lintChecks
+}
+
+dependencies {
+    //设置lint依赖 -> lint.jar
+    lintChecks project(path: ":lintlib", configuration: "lintChecks")
+}
+
+task copyLintJar(type: Copy) {
+    println("copy lint jar")
+    from(configurations.lintChecks) {
+        rename {
+            String fileName ->
+                'lint.jar'
+        }
+    }
+    into 'build/intermediates/lint/'
+}
+
+project.afterEvaluate {
+    def compileLintTask = project.tasks.find { it.name == 'compileLint' }
+    compileLintTask.dependsOn(copyLintJar)
+}
