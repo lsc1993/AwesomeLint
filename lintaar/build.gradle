@@ -20,26 +20,25 @@ android {
 }
 
 configurations {
-    lintChecks
+    lintImport
 }
 
 dependencies {
     //设置lint依赖 -> lint.jar
-    lintChecks project(path: ":lintlib", configuration: "lintChecks")
+    lintImport project(path: ":lintlib", configuration: "lintChecks")
 }
 
 task copyLintJar(type: Copy) {
-    println("copy lint jar")
-    from(configurations.lintChecks) {
+    from (configurations.lintImport) {
         rename {
-            String fileName ->
-                'lint.jar'
+            String filename ->
+                "lint.jar"
         }
     }
-    into 'build/intermediates/lint/'
+    into "$buildDir/intermediates/lint/"
 }
 
 project.afterEvaluate {
-    def compileLintTask = project.tasks.find { it.name == 'compileLint' }
+    def compileLintTask = project.tasks.find { it.name == 'prepareLintJar' }
     compileLintTask.dependsOn(copyLintJar)
 }
