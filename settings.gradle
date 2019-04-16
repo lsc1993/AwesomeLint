@@ -1,1 +1,1 @@
-include ':app', ':lintlib', ':lintaar'
+include ':app', ':lintlib', ':lintaar', ':buildSrc'
