@@ -1,0 +1,2 @@
+# AwesomeLint
+一个好用的支持git提交时增量检查的lint插件
