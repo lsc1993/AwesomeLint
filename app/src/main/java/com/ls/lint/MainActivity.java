@@ -12,6 +12,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Log.d("", "'");
+        Log.d("", "'");
         System.out.print("ddd");
     }
 }

@@ -67,8 +67,8 @@ class LintPlugin implements Plugin<Project> {
              */
             File lintResult = new File("lint-check-result.txt")
             Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(lintResult), "UTF-8"))
-            def hxReporter = new LintTxtReporter(cl, lintResult, writer, startIndex, endIndex)
-            flag.reporters.add(hxReporter)
+            def txtReporter = new LintTxtReporter(cl, lintResult, writer, startIndex, endIndex)
+            flag.reporters.add(txtReporter)
 
             /*
              * 执行run方法开始lint检查
@@ -79,15 +79,40 @@ class LintPlugin implements Plugin<Project> {
              */
             cl.run(new LintIssueRegistry(), files)
 
-            println("issue number: " + hxReporter.issueNumber)
+            println("issue number: " + txtReporter.issueNumber)
 
             //根据报告中存在的问题进行判断是否需要回退
-            if (hxReporter.issueNumber > 0) {
+            if (txtReporter.issueNumber > 0) {
                 //回退commit
                 "git reset HEAD~1".execute(null, project.getRootDir())
             }
 
             println("============ Lint check end ===============")
+        }
+
+        /*
+         * gradle task: 将git hooks 脚本复制到.git/hooks文件夹下
+         * 根据不同的系统类型复制不同的git hooks脚本(现支持Windows、Linux两种)
+         */
+        project.task("installGitHooks").doLast {
+            println("OS Type:" + System.getProperty("os.name"))
+            File postCommit
+            String OSType = System.getProperty("os.name")
+            if (OSType.contains("Windows")) {
+                postCommit = new File(project.rootDir, "post-commit-windows")
+            } else {
+                postCommit = new File(project.rootDir, "post-commit")
+            }
+
+            project.copy {
+                from (postCommit) {
+                    rename {
+                        String filename ->
+                            "post-commit"
+                    }
+                }
+                into new File(project.rootDir, ".git/hooks/")
+            }
         }
     }
 

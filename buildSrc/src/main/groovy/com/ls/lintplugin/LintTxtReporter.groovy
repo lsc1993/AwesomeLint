@@ -18,7 +18,7 @@ import com.google.common.base.Splitter
 
 /**
  * 重写Reporter,以TXT格式输出Lint扫描结果
- * 通过HXLintReporter来将Lint扫描的结果精确到每一行的修改
+ * 通过LintTxtReporter来将Lint扫描的结果精确到每一行的修改
  *
  * @author liushuanggo@gmail.com
  */
