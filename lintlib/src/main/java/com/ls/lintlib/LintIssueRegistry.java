@@ -2,6 +2,8 @@ package com.ls.lintlib;
 
 import com.android.tools.lint.client.api.IssueRegistry;
 import com.android.tools.lint.detector.api.Issue;
+import com.ls.lintlib.detector.ClassCommentDetector;
+import com.ls.lintlib.detector.MessageDetector;
 import com.ls.lintlib.detector.SimpleDetector;
 
 import org.jetbrains.annotations.NotNull;
@@ -19,6 +21,10 @@ public class LintIssueRegistry extends IssueRegistry {
     @NotNull
     @Override
     public List<Issue> getIssues() {
-        return Arrays.asList(SimpleDetector.ISSUE);
+        return Arrays.asList(
+                SimpleDetector.ISSUE,
+                ClassCommentDetector.ISSUE,
+                MessageDetector.ISSUE
+        );
     }
 }

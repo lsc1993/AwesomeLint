@@ -1,0 +1,3 @@
+#!/bin/sh
+$HOME/usr/project_git/AwesomeLint/./gradlew lintCheck
+exit 0
